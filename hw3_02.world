@@ -1,0 +1,49 @@
+# the size of a pixel in Stage's underlying raytrace model in meters
+resolution 0.02
+include "pioneer.inc"
+include "map.inc"
+include "sick.inc"
+
+
+window
+(
+    size [ 640 480 ]
+    center [0 0]
+    scale 27.556 # pixels per meter
+
+    show_data 1
+)
+
+floorplan
+(
+    bitmap "bitmaps/rink.png"
+    map_resolution 0.02
+    size [20 20 0.600]
+    name "hospital"
+    color "gray50"
+    gui_grid 1
+    gui_outline 1
+)
+
+#
+pioneer2dx
+(
+    # can refer to the robot by this name
+    name "r0"
+
+    pose [ 0.000 0.000 0.000 90 ]
+
+    # pioneer2dx's sonars will be ranger:0 and the laser will be ranger:1
+    sicklaser( pose [ 0.000 0.000 0.000 0.000 ] )
+
+    # demonstrate a plugin controller, implemented in examples/ctrl/wander.cc
+    # you probably should comment this out when using simple.cfg with Player
+    #ctrl "wander"
+
+    # report error-free position in world coordinates
+    localization "gps"
+    localization_origin [ 0 0 0 0 ] # Start odometry at (0, 0, 0).
+
+    # set odometry error
+    odom_error [.05 .05 .05 .05]
+)
