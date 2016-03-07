@@ -73,7 +73,7 @@ def main():
     global gps
     global odom
     print "--------------end-results-----------------"
-    print "odom: " + str(odom.position.x) + ", " + str(odom.position.y) + \
+print "odom: " + str(odom.position.x) + ", " + str(odom.position.y) + \
           ", theta: " + str(odom.orientation.z)
     print "gps: x: " + str(gps.position.x) + ", y: " + str(gps.position.y) + \
           ", theta: " + str(gps.orientation.z)
