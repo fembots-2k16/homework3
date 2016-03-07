@@ -48,7 +48,7 @@ def main():
 
     twist = Twist() #values default to 0 when new instance initiated
     twist.linear.x = linear_speed
-    twist.angular.z = angular_speed*2
+    twist.angular.z = angular_speed
 
     seconds = 0
     if linear_speed != 0:
