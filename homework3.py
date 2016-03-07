@@ -4,6 +4,7 @@ import math
 import sys
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
+import time
 
 odom = None
 gps = None
@@ -38,7 +39,7 @@ def main():
     vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
     rospy.init_node('navigator')
-    hertz = 5
+    hertz = 3 
     rate = rospy.Rate(hertz) # 5hz
     linear_amt_traveled = 0
     angular_amt_traveled = 0
@@ -52,14 +53,24 @@ def main():
     seconds = linear_amt / linear_speed #in seconds
     print "seconds to move: " + str(seconds)
 
-    maxi = int(round(seconds * hertz))
-    print "max i: " + str(maxi)
-    for i in range(maxi):
+    startTime = int(round(time.time() * 1000))
+    print startTime
+    maxi = int(round(seconds * hertz)) # max number of seconds
+    maxTime = startTime + (maxi * 1000) # max number of milliseconds the robot should move for
+    print "max seconds: " + str(maxi)
+    print "max milliseconds: " + str(maxTime)
+    curTime = int(round(time.time() * 1000)) # get current time
+    while curTime < maxTime: # while current time is less than max time
+        #print "i : " + str(i)
+        #print "curTime " + str(curTime)
         #publish the message
         vel_pub.publish(twist)
+        curTime = int(round(time.time() * 1000))
         rate.sleep() #
 
-    rospy.sleep(3.0)
+    millis = int(round(time.time() * 1000))
+    print millis
+    #rospy.sleep(3.0)
     global gps
     global odom
     print "finished"
