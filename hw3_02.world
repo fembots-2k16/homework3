@@ -45,5 +45,5 @@ pioneer2dx
     localization_origin [ 0 0 0 0 ] # Start odometry at (0, 0, 0).
 
     # set odometry error
-    odom_error [.05 .05 .05]
+    odom_error [.05 .05 .05 .05]
 )
