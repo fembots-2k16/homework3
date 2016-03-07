@@ -45,7 +45,7 @@ def main():
     twist.linear.x = linear_speed
     twist.angular.z = angular_speed
 
-    for i in range(90):
+    while True:
         #publish the message
         if angular_amt_traveled >= angular_amt and linear_amt_traveled >= linear_amt:
             break
