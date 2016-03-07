@@ -9,12 +9,12 @@ odom = None
 gps = None
 def processPose(pose_msg):
     global odom
-    odom = pose_msg.pose.pose.position
+    odom = pose_msg.pose.pose
     #print "odom: " + str(pose.x) + ", " + str(pose.y)
 
 def processGps(gps_msg):
     global gps
-    gps = gps_msg.pose.pose.position
+    gps = gps_msg.pose.pose
     #print "gps: " + str(gps.x) + ", " + str(gps.y)
 
 def main():
@@ -61,9 +61,11 @@ def main():
     global gps
     global odom
     print "finished"
-    print "--------------------------------------_"
-    print "gps: " + str(gps.x) + ", " + str(gps.y)
-    print "odom: " + str(odom.x) + ", " + str(odom.y)
+    print "--------------------------------------"
+    print "gps: x: " + str(gps.position.x) + ", y: " + str(gps.position.y) + \
+          ", theta: " + str(gps.orientation.z)
+    print "odom: " + str(odom.position.x) + ", " + str(odom.position.y) + \
+          ", theta: " + str(odom.orientation.z)
 
 if __name__ == "__main__":
     try:
