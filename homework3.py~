@@ -61,6 +61,7 @@ def main():
         if fast_angle:
             hertz = 10
             dbl = 1.33
+    print "seconds to move: " + str(seconds)
 
     maxi = int(round(seconds * hertz * dbl))
     for i in range(maxi):
