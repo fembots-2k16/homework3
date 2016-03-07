@@ -34,28 +34,30 @@ def main():
     pose_sub = rospy.Subscriber('/odom', Odometry, processPose)
     gps_sub = rospy.Subscriber('/base_pose_ground_truth', Odometry, processGps)
 
+
     vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
     rospy.init_node('navigator')
-    rate = rospy.Rate(10) # 10hz
+    hertz = 5
+    rate = rospy.Rate(hertz) # 5hz
     linear_amt_traveled = 0
     angular_amt_traveled = 0
+
+    print "travel: " + str(linear_amt) + "m @ speed: " + str(linear_speed) + "m/s"
 
     twist = Twist() #values default to 0 when new instance initiated
     twist.linear.x = linear_speed
     twist.angular.z = angular_speed
 
-    while True:
+    seconds = linear_amt / linear_speed #in seconds
+    print "seconds to move: " + str(seconds)
+
+    maxi = int(round(seconds * hertz))
+    print "max i: " + str(maxi)
+    for i in range(maxi):
         #publish the message
-        if angular_amt_traveled >= angular_amt and linear_amt_traveled >= linear_amt:
-            break
-        else:
-            vel_pub.publish(twist)
-
-        rospy.sleep(0.1) #0.1 seconds?
-
-        linear_amt_traveled += linear_speed*0.1
-        angular_amt_traveled += angular_speed*0.1
+        vel_pub.publish(twist)
+        rate.sleep() #
 
     rospy.sleep(3.0)
     global gps
