@@ -4,18 +4,23 @@ import math
 import sys
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
+from gazebo_msgs.msg import ModelStates
 
 odom = None
-gps = None
+model = None
 def processPose(pose_msg):
     global odom
-    odom = pose_msg.pose.pose
+    odom = pose_msg.pose
     #print "odom: " + str(pose.x) + ", " + str(pose.y)
 
-def processGps(gps_msg):
-    global gps
-    gps = gps_msg.pose.pose
-    #print "gps: " + str(gps.x) + ", " + str(gps.y)
+should_i_print = True
+def processModelStates(mdl_msg):
+    global model
+    global should_i_print
+    model = mdl_msg.pose
+    if should_i_print:
+        print model
+        should_i_print = False
 
 def main():
     if len(sys.argv) != 5:
@@ -33,7 +38,7 @@ def main():
 
     ns = "r0"
     pose_sub = rospy.Subscriber('/odom', Odometry, processPose)
-    gps_sub = rospy.Subscriber('/base_pose_ground_truth', Odometry, processGps)
+    gps_sub = rospy.Subscriber('/gazebo/model_states', ModelStates, processModelStates)
 
 
     vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
@@ -70,10 +75,10 @@ def main():
     vel_pub.publish(Twist())
 
     rospy.sleep(3.0)
-    global gps
     global odom
+    global model
     print "--------------end-results-----------------"
-print "odom: " + str(odom.position.x) + ", " + str(odom.position.y) + \
+    print "odom: " + str(model.position.x) + ", " + str(odom.position.y) + \
           ", theta: " + str(odom.orientation.z)
     print "gps: x: " + str(gps.position.x) + ", y: " + str(gps.position.y) + \
           ", theta: " + str(gps.orientation.z)
