@@ -99,9 +99,9 @@ def main():
     print "--------------end-results-----------------"
     print "odom: " + str(odom.position.x) + ", " + str(odom.position.y) + \
           ", theta: " + str(odom.orientation.z)
-    print "model state: \n" 
-    print "x: " + str(modelStates.position.x) + " y: " + str(modelStates.position.y) + " z: " + str(modelStates.position.z)
-
+    print "model state:" 
+    print "x: " + str(modelStates.position.x) + " y: " + str(modelStates.position.y) + " z: " + str(modelStates.orientation.z)
+    #print str(modelStates.orientation)
 if __name__ == "__main__":
     try:
         main()
