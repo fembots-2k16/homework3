@@ -24,6 +24,7 @@ def processGps(gps_msg):
 def findPioneer(state_msg):
     # loop through length of the model names and find the pioneer's index
     global pioneerIndex
+    global foundPioneer
     names = state_msg.name
     for i in range(0, len(state_msg.name)):
         if (names[i] == 'pioneer'):
@@ -36,11 +37,14 @@ def processStates(state_msg):
     global modelStates
     global foundPioneer
     global pioneerIndex
-    if (not foundPioneer):
+    if (foundPioneer):
         modelStates = state_msg.pose[pioneerIndex]
     else:
         findPioneer(state_msg)
-
+        modelStates = state_msg.pose[pioneerIndex]
+        print "x: " + str(modelStates.position.x) + " y: " + str(modelStates.position.y) + " z: " + str(modelStates.orientation.z)
+    
+    
 def main():
     if len(sys.argv) != 5:
         print "please run with four command line arguments:"
@@ -83,8 +87,8 @@ def main():
         seconds = angular_amt / (angular_speed)
         hertz = 5
         if fast_angle:
-            hertz = 10
-            dbl = 1.33
+            hertz = 5
+            dbl = 1.17
 
     maxi = int(round(seconds * hertz * dbl))
     for i in range(maxi):
@@ -97,8 +101,7 @@ def main():
     global modelStates
     global odom
     print "--------------end-results-----------------"
-    print "odom: " + str(odom.position.x) + ", " + str(odom.position.y) + \
-          ", theta: " + str(odom.orientation.z)
+    print "odom: " + str(odom.position.x) + ", " + str(odom.position.y) + ", theta: " + str(odom.orientation.z)
     print "model state:" 
     print "x: " + str(modelStates.position.x) + " y: " + str(modelStates.position.y) + " z: " + str(modelStates.orientation.z)
     #print str(modelStates.orientation)
